@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your LinkedIn Posts</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Your LinkedIn Posts</h1>
+        <div class="mt-4">
+            {% if posts_data %}
+                {% for post in posts_data.elements %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ post.text }}</h5>
+                            <p><strong>Created on:</strong> {{ post.createdAt }}</p>
+                            <form action="{% url 'comment_on_post' post_id=post.id %}" method="POST">
+                                {% csrf_token %}
+                                <textarea name="comment" class="form-control" placeholder="Enter your comment" required></textarea>
+                                <button type="submit" class="btn btn-primary mt-3">Post Comment</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No posts available to display.</p>
+            {% endif %}
+        </div>
+
+        <a href="{% url 'create_post' %}" class="btn btn-success mt-4">Create a New Post</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
